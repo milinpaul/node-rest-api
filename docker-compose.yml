@@ -1,0 +1,24 @@
+version: '3'
+services:
+  app:
+    container_name: 'node-rest-api'
+    volumes:
+      - ./:/usr/src/app
+      - /usr/src/app/node_modules
+    restart: always
+    build: .
+    ports:
+      - '8000:8000'
+    command: npm run dev
+    depends_on:
+      - app_db
+    links:
+      - app_db
+
+  app_db:
+    container_name: 'node-rest-api-db'
+    image: mongo
+    volumes:
+      - ./data/db:/data/db
+    ports:
+      - '27017:27017'
